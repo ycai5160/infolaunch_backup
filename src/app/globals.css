@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --background: #FFFEFC;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-satoshi), var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-satoshi: var(--font-satoshi);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-satoshi), var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Apply negative letter spacing to all headings */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.025em;
+}
+
+/* Scroll offset for fixed header */
+section[id] {
+  scroll-margin-top: 120px;
+}
+
+/* Hero entrance animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animate-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animate-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animate-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animate-delay-700 {
+  animation-delay: 0.7s;
+}
