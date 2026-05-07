@@ -80,3 +80,10 @@ section[id] {
 .animate-delay-700 {
   animation-delay: 0.7s;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+    opacity: 1;
+  }
+}

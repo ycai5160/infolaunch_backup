@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Skill(impeccable)",
+      "Bash(Get-ChildItem -Path \"D:\\\\AAA_website design\\\\infolaunch-main\\\\infolaunch-main\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Get-ChildItem -Path \"D:\\\\AAA_website design\\\\infolaunch-main\\\\infolaunch-main\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(npm run *)",
+      "Bash(npm install *)",
+      "Bash(Get-Content -Wait \"C:\\\\Users\\\\WINDOW~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--AAA-website-design-infolaunch-main-infolaunch-main\\\\19e75390-f7a6-47e7-8332-0089c97677ae\\\\tasks\\\\bmvg4j02g.output\")",
+      "Bash(Select-String -Pattern \"ready|localhost|error|Error|failed|Failed\")"
+    ]
+  }
+}

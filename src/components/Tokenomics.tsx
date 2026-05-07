@@ -64,8 +64,8 @@ const AllocationChart = () => {
   let cumulativePercentage = 0;
   
   return (
-    <div className="relative w-80 h-80 mx-auto">
-      <svg width="320" height="320" viewBox="0 0 320 320" className="transform -rotate-90">
+    <div className="relative w-full max-w-[260px] sm:max-w-[320px] mx-auto aspect-square">
+      <svg width="100%" height="100%" viewBox="0 0 320 320" className="transform -rotate-90">
         <circle
           cx="160"
           cy="160"
@@ -101,8 +101,8 @@ const AllocationChart = () => {
       {/* Center content */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-4xl font-bold text-gray-900 mb-2">$INFO</div>
-          <div className="text-sm text-gray-500">Token</div>
+          <div className="text-2xl sm:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">$INFO</div>
+          <div className="text-xs sm:text-sm text-gray-500">Token</div>
         </div>
       </div>
     </div>
@@ -228,22 +228,22 @@ export default function Tokenomics() {
           
 
           {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-1 mb-8">
+          <div className="flex flex-wrap justify-center gap-1.5 mb-8">
             {utilityFeatures.map((feature, index) => (
               <button
                 key={index}
                 onClick={() => setActiveTab(index)}
                 className={`
-                  px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 border-2
-                  ${activeTab === index 
-                    ? 'bg-gray-100' 
+                  px-3 sm:px-4 py-2.5 min-h-[44px] rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 flex items-center gap-1.5 sm:gap-2 border-2
+                  ${activeTab === index
+                    ? 'bg-gray-100'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50 border-transparent'
                   }
                 `}
                 style={activeTab === index ? { borderColor: feature.color, color: feature.color } : {}}
               >
-                <feature.icon className="w-3 h-3" />
-                <span className="hidden sm:inline">{feature.title}</span>
+                <feature.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span>{feature.title}</span>
               </button>
             ))}
           </div>

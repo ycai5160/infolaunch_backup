@@ -114,8 +114,8 @@ export default function CoreFeatures() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
           {/* Features List - Left Column */}
-          <div className="space-y-8">
-            <div className="space-y-8 w-full max-w-2xl space-y-8 md:space-y-16 lg:space-y-[128px] mb-8 md:mb-12 lg:mb-[20vh]">
+          <div>
+            <div className="w-full max-w-2xl space-y-8 md:space-y-16 lg:space-y-[128px] mb-8 md:mb-12 lg:mb-[20vh]">
               {coreFeatures.map((feature, index) => (
                 <div 
                   key={index} 
@@ -206,8 +206,8 @@ export default function CoreFeatures() {
           </div>
           
           {/* Mobile Mockup - Right Column */}
-          <div className="relative h-full w-full hidden md:block">
-            <div className="h-[50vh] md:h-[60vh] sticky top-[15vh] md:top-[20vh]">
+          <div className="relative h-full w-full hidden lg:block">
+            <div className="h-[60vh] sticky top-[20vh]">
               {/* Enhanced mockup container */}
               <div className="relative">
                 {/* Animated background elements */}

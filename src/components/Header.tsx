@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -29,7 +29,6 @@ const socialLinks: SocialLink[] = [
       </svg>
     )
   },
-  
   {
     name: 'DexScreener',
     href: '',
@@ -59,22 +58,33 @@ const navigationLinks = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobileMenuOpen]);
 
   return (
-    <header className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-4 flex justify-center">
-      <div className="w-full md:w-auto bg-white/95 backdrop-blur-sm border border-gray-200 rounded-2xl px-6 py-3 relative" style={{ boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03)' }}>
-        <div className="flex items-center h-12 gap-8">
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-6xl px-4 flex justify-center">
+      <div
+        ref={containerRef}
+        className="w-full md:w-auto bg-white/95 backdrop-blur-sm border border-gray-200 rounded-2xl px-6 py-3 relative"
+        style={{ boxShadow: '0 10px 25px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03)' }}
+      >
+        {/* Main bar */}
+        <div className="flex items-center justify-between md:justify-start h-12 md:gap-8">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="block hover:opacity-80 transition-opacity">
+            <Link href="/" className="block hover:opacity-80 transition-opacity" onClick={closeMobileMenu}>
               <Image
                 src="/logo.png"
                 alt="Info.Launch"
@@ -89,9 +99,9 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navigationLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.href}
-                href={link.href} 
+                href={link.href}
                 className="text-gray-600 hover:text-black transition-colors font-medium text-sm"
               >
                 {link.label}
@@ -99,7 +109,7 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Social Icons */}
+          {/* Desktop Social Icons */}
           <div className="hidden md:flex items-center">
             {socialLinks.map((social, index) => (
               social.href ? (
@@ -125,75 +135,78 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button 
-              onClick={toggleMobileMenu}
-              className="text-gray-600 hover:text-black transition-colors p-2 rounded-lg hover:bg-gray-50"
-              aria-label="Toggle mobile menu"
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={() => setIsMobileMenuOpen((v) => !v)}
+            className="md:hidden flex items-center justify-center w-11 h-11 text-gray-600 hover:text-black transition-colors rounded-lg hover:bg-gray-50"
+            aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
+          >
+            <svg
+              className="w-5 h-5 transition-transform duration-200"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
             >
               {isMobileMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               )}
-            </button>
-          </div>
+            </svg>
+          </button>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl shadow-lg md:hidden">
-            <div className="px-4 py-4 space-y-3">
-              {/* Mobile Navigation Links */}
-              <div className="space-y-2">
-                {navigationLinks.map((link) => (
-                  <Link 
-                    key={link.href}
-                    href={link.href} 
-                    onClick={closeMobileMenu}
-                    className="block px-3 py-2 text-gray-600 hover:text-black hover:bg-gray-50 rounded-lg transition-colors font-medium text-sm"
+        {/* Mobile menu — always in DOM, animated via CSS */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-200 ease-out ${
+            isMobileMenuOpen
+              ? 'max-h-96 opacity-100 mt-3'
+              : 'max-h-0 opacity-0 mt-0'
+          }`}
+        >
+          <div className="border-t border-gray-100 pt-3 pb-1 space-y-1">
+            {navigationLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={closeMobileMenu}
+                className="flex items-center min-h-[44px] px-3 py-2 text-gray-600 hover:text-black hover:bg-gray-50 rounded-lg transition-colors font-medium text-sm"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="border-t border-gray-100 pt-3 pb-2">
+            <div className="flex items-center justify-center gap-1">
+              {socialLinks.map((social, index) => (
+                social.href ? (
+                  <a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-11 h-11 text-gray-600 hover:text-black transition-colors rounded-lg hover:bg-gray-50"
+                    aria-label={social.name}
                   >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-              
-              {/* Mobile Social Icons */}
-              <div className="pt-3 border-t border-gray-200">
-                <div className="flex items-center justify-center space-x-4">
-                  {socialLinks.map((social, index) => (
-                    social.href ? (
-                      <a
-                        key={index}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 text-gray-600 hover:text-black transition-colors rounded-lg hover:bg-gray-50"
-                        aria-label={social.name}
-                      >
-                        {social.icon}
-                      </a>
-                    ) : (
-                      <div
-                        key={index}
-                        className="p-2 text-gray-400 cursor-not-allowed rounded-lg"
-                        aria-label={`${social.name} (coming soon)`}
-                      >
-                        {social.icon}
-                      </div>
-                    )
-                  ))}
-                </div>
-              </div>
+                    {social.icon}
+                  </a>
+                ) : (
+                  <div
+                    key={index}
+                    className="flex items-center justify-center w-11 h-11 text-gray-400 cursor-not-allowed rounded-lg"
+                    aria-label={`${social.name} (coming soon)`}
+                  >
+                    {social.icon}
+                  </div>
+                )
+              ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );
-} 
+}
